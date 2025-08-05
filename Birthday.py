@@ -50,7 +50,10 @@ class Birthday:
         # subtract from birthday
         # return # of days
         today = datetime.today()
-        # COMPLETE THIS FOR YOUR ASSIGNMENT
+        this_year_bday = datetime(today.year, self.__month, self.__day)
+        if this_year_bday < today:
+            this_year_bday = datetime(today.year + 1, self.__month, self.__day)
+        return (this_year_bday - today).days
 
     def day_in_year(self, month, day):
         """calculates the day number within the year corresponding to a given
@@ -64,8 +67,3 @@ class Birthday:
         """String representation for the object"""
         return f"[ {self.get_month()}/{self.get_day()} ]"
 
-
-demo = Birthday(6, 29)
-
-print(demo.day_in_year(6, 29))  # d_b
-print(demo.day_in_year(4, 29))  # d_t
