@@ -2,7 +2,9 @@
 from Friend import Friend
 import csv
 from datetime import datetime
+
 # ANSI styling functions for terminal output
+# These are used to make menus and messages more readable in the terminal
 def bold(text): return f"\033[1m{text}\033[0m"
 def green(text): return f"\033[92m{text}\033[0m"
 def red(text): return f"\033[91m{text}\033[0m"
@@ -11,6 +13,8 @@ def red(text): return f"\033[91m{text}\033[0m"
 friends = []
 
 # Load data from CSV on startup
+# This function reads each row in the CSV file and converts it into a Friend object
+# It allows persistence across sessions
 def load_friends():
     try:
         with open("friends_database.csv", newline="") as f:
@@ -31,6 +35,8 @@ def load_friends():
         pass
 
 # Save data to CSV on exit
+# Ensures all new or updated friend data is written back to the file
+# Uses DictWriter to maintain structured headers
 def save_friends():
     with open("friends_database.csv", "w", newline="") as f:
         fieldnames = ["first_name", "last_name", "birth_month", "birth_day", "email_address",
@@ -53,6 +59,8 @@ def save_friends():
             })
 
 # Manually enter friend
+# This optional feature allows importing friend data from a custom CSV file.
+# It provides flexibility and reusability with external contact lists.
 
 def load_custom_csv():
     path = input("Enter path to CSV file: ")
@@ -97,6 +105,8 @@ def add_friend():
     friends.append(friend)
 
 # Edit existing friend
+# Allows selective editing of an existing friend's information.
+# Skipping a field leaves the current value unchanged.
 def edit_friend(friend):
     print("Leave blank to keep current value.")
     for attr, label in [("email_address", "Email"), ("nickname", "Nickname"), ("street_address", "Street"),
@@ -115,6 +125,9 @@ def edit_friend(friend):
             print("Invalid birthday input — skipped.")
 
 # Search and manage friend
+# Lets the user search by last name.
+# If matches are found, user can select one to edit or delete.
+# Deletion includes confirmation step.
 def search_friend():
     name = input("Search by last name: ").lower()
     found = [f for f in friends if f.last_name.lower() == name]
@@ -136,6 +149,10 @@ def search_friend():
             print("Friend deleted.")
 
 # Reports menu
+# Displays reporting options to the user.
+# 3.1: Alphabetical list of all friends
+# 3.2: List sorted by how soon their birthday is
+# 3.3: Printable mailing labels
 def report_menu():
     while True:
         print("\nReports")
@@ -159,6 +176,8 @@ def report_menu():
             print("Invalid.")
 
 # Main app loop
+# Repeatedly displays the menu and handles all user navigation.
+# Option 1 has a submenu to either add manually or import from a CSV.
 def main_menu():
     load_friends()
     while True:
@@ -193,6 +212,6 @@ def main_menu():
         else:
             print("Invalid choice.")
 
-
+# Start the application
 if __name__ == "__main__":
     main_menu()
